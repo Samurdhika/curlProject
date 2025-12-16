@@ -1,11 +1,22 @@
-OBJ = main.o sendData.o
-APPNAME = curlProj
+# Makefile for curlProject
 
-$(APPNAME) : $(OBJ)
-	gcc -o $(APPNAME) $(OBJ) -lcurl
+CC      := gcc
+CFLAGS  := -Wall -Wextra -std=c11 -O2
+LDLIBS  := -lcurl
 
-%.o : %.c
-	gcc -c -o $@ $<
+TARGET  := appdev
+SRCS    := main.c sendData.c
+OBJS    := $(SRCS:.c=.o)
 
-clean :
-	rm $(OBJ) $(APPNAME)
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CC) -o $@ $^ $(LDLIBS)
+
+%.o: %.c appdev.h
+	$(CC) $(CFLAGS) -c $<
+
+clean:
+	rm -f $(OBJS) $(TARGET)
+
+.PHONY: all clean
